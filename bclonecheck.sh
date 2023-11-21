@@ -35,11 +35,16 @@ zdb -h 2>&1 | grep -q -- '-T --brt-stats' || \
 tempdir="$(mktemp -d)"
 
 trap cleanup INT TERM
-set -e
 
 # Dump the BRT, write DVAs to file
 # TODO: Can DVAs start with hex digits? how many digits?
-zdb -TTT "$zpool" | grep -Po '^[0-9a-f]+:[0-9a-f]+(?=\s)' > "${tempdir}/dvas.txt"
+zdb -TTT "$zpool" | grep -Po '^[0-9a-f]+:[0-9a-f]+(?=\s)' > "${tempdir}/dvas.txt" || {
+    echo "BRT empty. There are no bcloned files in the pool.";
+    cleanup; 
+    exit 0
+}
+
+set -e
 
 # Dump pool blocks, filter for L0 blocks and match on dumped DVAs, get filepath for each
 zdb -bbb -vvv "$zpool" | grep 'level 0' | grep -wf "${tempdir}/dvas.txt" | \
