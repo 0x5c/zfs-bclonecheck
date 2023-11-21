@@ -11,7 +11,6 @@ errmsg() {
 }
 
 cleanup() {
-    echo cleaning...
     if [ -z "$NOCLEAN" ]; then
         rm -r "$tempdir"
     else
