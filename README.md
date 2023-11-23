@@ -1,7 +1,8 @@
 # zfs-bclonecheck
 Small script to check for bcloned files on a ZFS pool
 
-> Warning: This script requires a version of zdb that can dump the BRT. See https://github.com/openzfs/zfs/pull/15541
+> [!WARNING]
+> This script requires a version of zdb that can dump the BRT. See https://github.com/openzfs/zfs/pull/15541
 
 ## Usage
 
